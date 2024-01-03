@@ -12,11 +12,11 @@
     <MeCrud ref="$table" v-model:query-items="queryItems" :scroll-x="1200" :columns="columns"
       :get-data="api.readDictData">
 
-      <MeQueryItem label="字典名称" :label-width="50">
+      <MeQueryItem label="字典名称" :label-width="80">
         <n-select v-model:value="queryItems.dictcode" :options="options" />
       </MeQueryItem>
 
-      <MeQueryItem label="字典标签" :label-width="50">
+      <MeQueryItem label="字典标签" :label-width="80">
         <n-input v-model:value="queryItems.dictlabel" type="text" placeholder="请输入字典标签" clearable
           @keydown.enter="() => $table?.handleSearch" />
       </MeQueryItem>

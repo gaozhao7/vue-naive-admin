@@ -19,4 +19,6 @@ export default {
   updateDictData: (data) => request.patch(`/dictdata/${data.id}`, data),
   deleteDictData: (id) => request.delete(`/dictdata/${id}`),
 
+  restCache: (params = {}) => request.get('/sysdict/restCache', { params }),
+  getCache: (params = {}) => request.get('/sysdict/getCache', { params }),
 }

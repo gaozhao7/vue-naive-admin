@@ -2,19 +2,29 @@
 <template>
   <CommonPage>
     <template #action>
-      <n-button type="primary" @click="handleAdd()">
-        <i class="i-material-symbols:add mr-4 text-18" />
-        新增
-      </n-button>
+      <div class="flex items-center">
+        <n-button type="primary" @click="handleAdd()">
+          <i class="i-material-symbols:add mr-4 text-18" />
+          新增
+        </n-button>
+        <n-button class="ml-12" type="error" @click="handleRestCache()">
+          <i class="i-material-symbols:add mr-4 text-18" />
+          刷新缓存
+        </n-button>
+        <n-button class="ml-12" type="info" @click="handleGetCache()">
+          <i class="i-material-symbols:add mr-4 text-18" />
+          测试缓存
+        </n-button>
+      </div>
     </template>
 
     <MeCrud ref="$table" v-model:query-items="queryItems" :scroll-x="1200" :columns="columns" :get-data="api.read">
-      <MeQueryItem label="字典名称" :label-width="50">
+      <MeQueryItem label="字典名称" :label-width="80">
         <n-input v-model:value="queryItems.dictname" type="text" placeholder="请输入字典名称" clearable
           @keydown.enter="() => $table?.handleSearch" />
       </MeQueryItem>
 
-      <MeQueryItem label="字典编码" :label-width="50">
+      <MeQueryItem label="字典编码" :label-width="80">
         <n-input v-model:value="queryItems.dictcode" type="text" placeholder="请输入字典编码" clearable
           @keydown.enter="() => $table?.handleSearch" />
       </MeQueryItem>
@@ -35,14 +45,14 @@
           message: '请输入字典名称',
           trigger: ['input', 'blur'],
         }">
-          <n-input v-model:value="modalForm.dictname"  />
+          <n-input v-model:value="modalForm.dictname" />
         </n-form-item>
         <n-form-item label="字典编码" path="dictcode" :rule="{
           required: true,
           message: '请输入字典编码',
           trigger: ['input', 'blur'],
         }">
-          <n-input v-model:value="modalForm.dictcode"  />
+          <n-input v-model:value="modalForm.dictcode" />
         </n-form-item>
 
         <n-form-item v-if="modalAction === 'add'" label="状态" path="status">
@@ -52,11 +62,10 @@
           </n-switch>
         </n-form-item>
         <n-form-item label="备注" path="remark">
-          <n-input v-model:value="modalForm.remark"  type="textarea" size="small"
-            :autosize="{
-              minRows: 3,
-              maxRows: 5
-            }" />
+          <n-input v-model:value="modalForm.remark" type="textarea" size="small" :autosize="{
+            minRows: 3,
+            maxRows: 5
+          }" />
         </n-form-item>
       </n-form>
     </MeModal>
@@ -94,7 +103,7 @@ const columns = [
   {
     title: '备注',
     key: 'remark',
-    width: 250,
+    width: 150,
     ellipsis: { tooltip: true },
   },
   {
@@ -128,13 +137,13 @@ const columns = [
   {
     title: '操作',
     key: 'actions',
-    width: 200,
+    width: 280,
     align: 'right',
     fixed: 'right',
     hideInExcel: true,
     render(row) {
       return [
-      h(
+        h(
           NButton,
           {
             size: 'small',
@@ -191,6 +200,16 @@ async function handleEnable(row) {
   } catch (error) {
     row.enableLoading = false
   }
+}
+
+async function handleRestCache() {
+  await api.restCache({});
+  $message.success('刷新成功')
+}
+
+async function handleGetCache() {
+  let result = await api.getCache({ dictcode: 'test' })
+  console.log(result)
 }
 
 const {
